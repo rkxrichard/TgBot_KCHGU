@@ -2,6 +2,7 @@ package com.kchguniversity_bot.services;
 
 import com.kchguniversity_bot.bots.KchguBot;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -13,11 +14,13 @@ import java.util.List;
 @Service
 public class MainMenuService {
 
-    private final TelegramMessageSender messageSender;
+    private final TelegramMessageSender sender;
+    private final  KchguBot kchguBot;
 
     @Autowired
-    public MainMenuService(TelegramMessageSender messageSender) {
-        this.messageSender = messageSender;
+    public MainMenuService(@Lazy KchguBot kchguBot,TelegramMessageSender sender) {
+        this.kchguBot = kchguBot;
+        this.sender = sender;
     }
 
     public void sendMainMenu(Long chatId) {
@@ -48,7 +51,7 @@ public class MainMenuService {
         keyboardMarkup.setResizeKeyboard(true);
         message.setReplyMarkup(keyboardMarkup);
 
-        messageSender.sendMessage(message, chatId);
+        sender.sendMessage(message, chatId);
     }
 
 

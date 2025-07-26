@@ -17,8 +17,5 @@ public class BotConfiguration {
         return botsApi;
     }
 
-    @Bean
-    public KchguBot kchguBot() {
-        return new KchguBot();
-    }
+
 }

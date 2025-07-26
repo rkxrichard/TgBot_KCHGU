@@ -13,6 +13,14 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 public class KchguBot extends TelegramLongPollingBot implements TelegramMessageSender {
+
+    private final MainMenuService mainMenuService;
+
+    @Autowired
+    public KchguBot(MainMenuService mainMenuService) {
+        this.mainMenuService = mainMenuService;
+    }
+
     @Override
     public void sendMessage(SendMessage message, Long chatId) {
         try {
@@ -41,7 +49,7 @@ public class KchguBot extends TelegramLongPollingBot implements TelegramMessageS
                 SendMessage message = new SendMessage();
                 message.setChatId(update.getMessage().getChatId().toString());
                 message.setText("Главное меню");
-                sendMessage(message, update.getMessage().getChatId());
+                mainMenuService.sendMainMenu(update.getMessage().getChatId());
             }
         }
 
