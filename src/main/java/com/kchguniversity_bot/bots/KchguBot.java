@@ -5,6 +5,7 @@ import com.kchguniversity_bot.services.TelegramMessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -17,7 +18,7 @@ public class KchguBot extends TelegramLongPollingBot implements TelegramMessageS
     private final MainMenuService mainMenuService;
 
     @Autowired
-    public KchguBot(MainMenuService mainMenuService) {
+    public KchguBot(@Lazy MainMenuService mainMenuService) {
         this.mainMenuService = mainMenuService;
     }
 

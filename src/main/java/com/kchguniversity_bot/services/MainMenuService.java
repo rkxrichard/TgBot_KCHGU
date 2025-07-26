@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,44 +15,22 @@ import java.util.List;
 @Service
 public class MainMenuService {
 
-    private final TelegramMessageSender sender;
-    private final  KchguBot kchguBot;
+    private final TelegramMessageSender messageSender;
+    private final KeyboardBuilder keyboardBuilder;
 
     @Autowired
-    public MainMenuService(@Lazy KchguBot kchguBot,TelegramMessageSender sender) {
-        this.kchguBot = kchguBot;
-        this.sender = sender;
+    public MainMenuService(TelegramMessageSender messageSender, KeyboardBuilder keyboardBuilder) {
+        this.messageSender = messageSender;
+        this.keyboardBuilder = keyboardBuilder;
     }
 
     public void sendMainMenu(Long chatId) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId.toString());
-        message.setText("Добро пожаловать в КЧГУ! Выберите раздел:");
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboard = new ArrayList<>();
+        message.setText("Добро пожаловать в КЧГУ!");
+        message.setReplyMarkup(keyboardBuilder.createMainMenu());
 
-        KeyboardRow row1 = new KeyboardRow();
-        row1.add("О вузе");
-        row1.add("Поступить в университет");
-
-        KeyboardRow row2 = new KeyboardRow();
-        row2.add("");
-        row2.add("");
-
-        KeyboardRow row3 = new KeyboardRow();
-        row3.add("");
-        row3.add("");
-
-
-        keyboard.add(row1);
-        keyboard.add(row2);
-        keyboard.add(row3);
-
-        keyboardMarkup.setKeyboard(keyboard);
-        keyboardMarkup.setResizeKeyboard(true);
-        message.setReplyMarkup(keyboardMarkup);
-
-        sender.sendMessage(message, chatId);
+        messageSender.sendMessage(message, chatId);
     }
 
 
